@@ -6,7 +6,7 @@ const fs = require('fs');
 const calendar = google.calendar('v3');
 
 // Path to your service account credentials JSON file
-const SERVICE_ACCOUNT_FILE = path.join(__dirname, '/service-account.json');
+const SERVICE_ACCOUNT_FILE = path.join(__dirname, '/service-account.json'); //Path to google service-account.json file from google cloud api
 
 const auth = new GoogleAuth({
     keyFile: SERVICE_ACCOUNT_FILE,
