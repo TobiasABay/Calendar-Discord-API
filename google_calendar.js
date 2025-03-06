@@ -1,8 +1,6 @@
 const { google } = require('googleapis');
 const { GoogleAuth } = require('google-auth-library');
 const path = require('path');
-const fs = require('fs');
-//const { path } = require('path');
 const calendar = google.calendar('v3');
 
 // Path to your service account credentials JSON file
@@ -18,7 +16,7 @@ async function getUpcomingEvents() {
     const calendarApi = google.calendar({ version: 'v3', auth: authClient });
 
     const res = await calendarApi.events.list({
-        calendarId: 'google_calendar_id', // Replace with your calendar ID
+        calendarId: '<CALENDERID>',
         timeMin: (new Date()).toISOString(),
         maxResults: 10,
         singleEvents: true,
