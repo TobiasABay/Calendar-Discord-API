@@ -1,11 +1,14 @@
 const { Client, GatewayIntentBits } = require('discord.js');
 const { getUpcomingEvents } = require('./google_calendar');
+const { checkVoiceChannels } = require('./bot_raid');
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 // Your Discord bot token
-const DISCORD_TOKEN = 'discord_token';
 const CHANNEL_ID = 'channel_id'; // Replace with the ID of the channel where you want to send the message
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages] });
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildVoiceStates] });
 
 client.once('ready', async () => {
     console.log('Bot is ready!');
@@ -38,6 +41,16 @@ client.once('ready', async () => {
             console.log('No upcoming events.');
         }
     }, 5000); // Send message every 5 seconds (5000 ms)
+    
+    scheduleNextCheck();
 });
 
-client.login(DISCORD_TOKEN);
+function scheduleNextCheck() {
+    const randomTime = Math.floor(Math.random() * (25200000 - 600000) + 600000); // Random time between 10 min and 7 hours
+    setTimeout(() => {
+        checkVoiceChannels(client);
+        scheduleNextCheck(); // Schedule the next run
+    }, randomTime);
+}
+
+client.login(process.env.DISCORD_TOKEN);
